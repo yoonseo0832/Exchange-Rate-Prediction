@@ -2,6 +2,7 @@ from datetime import timedelta
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import requests
+import pandas as pd
 import streamlit as st
 import yfinance as yf
 
