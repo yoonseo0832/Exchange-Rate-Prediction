@@ -59,7 +59,7 @@ df["BBL"] = sma20 - (2 * std20)
 df["BBU"] = sma20 + (2 * std20)
 
 # 백엔드 API 호출 (실제 Render URL 입력)
-API_BASE_URL = "https://your-render-service.onrender.com"
+API_BASE_URL = "https://exchange-rate-prediction.onrender.com"
 currency_code = selected_currency.split("/")[0].lower()
 
 pred_price, status = None, "대기 중"
