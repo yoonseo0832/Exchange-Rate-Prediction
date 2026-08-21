@@ -17,7 +17,8 @@ with b: run=st.button('분석 실행 →',type='primary',use_container_width=Tru
 if not run: st.markdown('<div class="info-box">통화를 선택하고 <b>분석 실행</b>을 눌러 최신 환율과 AI 예측을 확인하세요.</div>',unsafe_allow_html=True)
 else:
     try:
-        code=currency.split('/')[0].lower(); backend_url=os.getenv('BACKEND_URL',st.secrets.get('BACKEND_URL','http://localhost:8000')).rstrip('/'); data=requests.get(f'{backend_url}/predict?currency={code}',timeout=30).json(); curr=data['current_price']; pred=data['predicted_next_price']; status=data['volatility_status']; diff=pred-curr
+        code=currency.split('/')[0].lower(); 
+        backend_url=os.getenv('BACKEND_URL',st.secrets.get('BACKEND_URL','https://exchange-rate-prediction.onrender.com')).rstrip('/'); data=requests.get(f'{backend_url}/predict?currency={code}',timeout=30).json(); curr=data['current_price']; pred=data['predicted_next_price']; status=data['volatility_status']; diff=pred-curr
         tick={'USD/KRW':'USDKRW=X','JPY/KRW':'JPYKRW=X','AUD/KRW':'AUDKRW=X'}; df=yf.download(tick[currency],period='30d',progress=False,auto_adjust=False); close=df['Close']; close=close.iloc[:,0] if len(getattr(close,'shape',()))>1 else close
         st.markdown('<div class="section-title">오늘의 시장 요약</div>',unsafe_allow_html=True); cols=st.columns(3)
         cards=[('현재 환율',f'₩ {curr:,.2f}','실시간 기준'),('내일의 AI 예측',f'₩ {pred:,.2f}',f'{diff:+.2f} ({diff/curr*100:+.2f}%)'),('변동성 상태','주의 필요' if 'Danger' in status else '안정적',status)]
